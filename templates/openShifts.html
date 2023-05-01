@@ -1,0 +1,80 @@
+{% extends 'base.html' %} {% block content %}
+
+    <style>
+        .openshift-con {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+
+
+
+<div class="openshift-con">
+
+
+    <div>
+        <h1>Information</h1>
+        <table>
+            <tbody>
+                <tr>
+                <th>ShiftID</th>
+                <td>{{currentShift.shiftID}}</td>
+                </tr>
+                <tr>
+                <th>Location</th>
+                <td>{{currentShift.location}}</td>
+                </tr>
+                <tr>
+                <th>date</th>
+                <td>{{currentShift.date}}</td>
+                </tr>
+                <tr>
+                <th>Start Time</th>
+                <td>{{currentShift.start_time}}</td>
+                </tr>
+                <tr>
+                <th>End time</th>
+                <td>{{currentShift.end_time}}</td>
+                </tr>
+                <tr>
+                <th>Price per Hour</th>
+                <td>{{currentShift.price_per_hour}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+
+    <div>
+        <h1>Applied Nurses</h1>
+        <table>
+            <thead>
+                <th>applicationID</th>
+                <th>Applicant</th>
+            </thead>
+            <tbody>
+                {% for applicant in applicants %}
+                <form method="post">
+                {% csrf_token%}
+                <input type="hidden" name="shiftID" value="{{currentShift.shiftID}}" />
+                <input
+                    type="hidden"
+                    name="applicationID"
+                    value="{{applicant.applicationID}}"
+                />
+                <tr>
+                    <th>{{applicant.applicationID}}</th>
+                    <td>{{applicant.applicant}}</td>
+                    <td><button>Approve</button></td>
+                </tr>
+                </form>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

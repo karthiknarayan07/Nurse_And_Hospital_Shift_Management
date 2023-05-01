@@ -1,0 +1,89 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .nur-con {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+  }
+  table, th, td {
+    border: 1px solid black;
+  }
+</style>
+
+<h1>Hello {{user.first_name}}-{{user.last_name}}</h1>
+<h2>Welcome!!</h2>
+
+<br />
+<hr />
+<div class="nur-con">
+  <div>
+    <h2>My shifts</h2>
+    <table>
+      <thead>
+        <th>Application ID</th>
+        <th>Applied shift</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Start time</th>
+        <th>End Time</th>
+        <th>Price per hour</th>
+        <th>Status</th>
+      </thead>
+      <tbody>
+        {% for shift in appliedShifts %}
+        <tr>
+          <th>{{shift.applicationID}}</th>
+          <td>{{shift.appliedShift}}</td>
+          <td>{{shift.appliedShift.location}}</td>
+          <td>{{shift.appliedShift.date}}</td>
+          <td>{{shift.appliedShift.start_time}}</td>
+          <td>{{shift.appliedShift.end_time}}</td>
+          <td>{{shift.appliedShift.price_per_hour}}</td>
+          <td>
+            {% if shift.is_accepted %} Accepted {% else %} Pending {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <h2>open positions</h2>
+    <table>
+      <thead>
+        <th>Shift ID</th>
+        <th>Hospital</th>
+        <th>location</th>
+        <th>Date</th>
+        <th>start time</th>
+        <th>End time</th>
+        <th>price per hour</th>
+        <th>Action</th>
+      </thead>
+      <tbody>
+        {% for shift in availableShifts %}
+        <tr>
+          <th>{{shift.shiftID}}</th>
+          <td>{{shift.hospital.first_name}}_{{shift.hospital.last_name}}</td>
+          <td>{{shift.location}}</td>
+          <td>{{shift.date}}</td>
+          <td>{{shift.start_time}}</td>
+          <td>{{shift.end_time}}</td>
+          <td>{{shift.price_per_hour}}</td>
+          <form method="post">
+            <input type="hidden" name="shiftID" value="{{shift.shiftID}}" />
+            {%csrf_token%}
+            <td><button>Apply</button></td>
+          </form>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% endblock content %}

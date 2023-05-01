@@ -1,0 +1,53 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  .home-container {
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr;
+  }
+</style>
+
+<div class="home-container p-4">
+  {% if is_mediator %}
+
+    <div class="p-2">
+        <h2>Existing customers</h2>
+        <table>
+            <thead>
+                <th>Name</th>
+                <th>User</th>
+            </thead>
+            <tbody>
+                {% for temp in allUsers %}
+                <tr>
+                <th>{{temp.first_name}}_{{temp.last_name}}</th>
+                <td>{% if temp.is_nurse %} Nurse {% else %} Hospital {% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+  <div>
+    <h2>Hospital Registration</h2>
+    <form method="post" action="/register_hospital">
+      {% csrf_token %} {{ HospitalForm.as_p }}
+      <button type="submit">Register</button>
+    </form>
+  </div>
+    
+
+  <div>
+    <h2>Nurse Registration</h2>
+    <form method="post" action="/register_nurse">
+      {% csrf_token %} {{ NurseForm.as_p }}
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  {% else %}
+  <h1>Welcome to ondek healthcare</h1>
+    <button class="btn btn-primary m-2" onclick='location.href = "{% url 'hospital' %}";' >Hospital Dashboard</button>
+    <button class="btn btn-primary m-2" onclick='location.href = "{% url 'nurse' %}";' >Nurse Dashboard</button>
+  {% endif %}
+</div>
+{% endblock content %}

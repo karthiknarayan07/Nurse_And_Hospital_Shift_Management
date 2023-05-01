@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .hosp-con {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+</style>
+
+
+<h1>Hello {{user.first_name}}-{{user.last_name}}</h1>
+<h2>Welcome!!</h2>
+<br>
+<div class="hosp-con p-4">
+    <div class="p-4">
+        <form method="post">
+            {% csrf_token %}
+            {{ shiftCreationForm.as_p }}
+            <button type="submit">Create</button>
+        </form>
+    </div>
+
+    <div class="p-4">
+        <h2>To be reviewed</h2>
+        <table>
+            <thead>
+                <th>Shift ID</th>
+                <th>location</th>
+                <th>Date</th>
+                <th>start time</th>
+                <th>End time</th>
+                <th>price per hour</th>
+            </thead>
+            <tbody>
+                {% for shift in openShifts %}
+                <tr onclick="window.location.href = `hospital/openshifts/{{shift.shiftID}}`;" style="cursor: pointer;">
+                    <th>{{shift.shiftID}}</th>
+                    <td>{{shift.location}}</td>
+                    <td>{{shift.date}}</td>
+                    <td>{{shift.start_time}}</td>
+                    <td>{{shift.end_time}}</td>
+                    <td>{{shift.price_per_hour}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="p-4">
+        <h2>Reviewed</h2>
+        <table>
+            <thead>
+                <th>Shift ID</th>
+                <th>location</th>
+                <th>Date</th>
+                <th>start time</th>
+                <th>End time</th>
+                <th>price per hour</th>
+            </thead>
+            <tbody>
+                {% for shift in ongoingShifts %}
+                <tr>
+                    <th>{{shift.shiftID}}</th>
+                    <td>{{shift.location}}</td>
+                    <td>{{shift.date}}</td>
+                    <td>{{shift.start_time}}</td>
+                    <td>{{shift.end_time}}</td>
+                    <td>{{shift.price_per_hour}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+{% endblock content %}
